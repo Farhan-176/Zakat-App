@@ -1,0 +1,51 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="96dp"
+    android:height="96dp"
+    android:viewportWidth="96"
+    android:viewportHeight="96">
+
+    <!-- Background Emerald Disc -->
+    <path
+        android:fillColor="#064E3B"
+        android:pathData="M48,6 A42,42 0 1,0 48,90 A42,42 0 1,0 48,6" />
+
+    <!-- Outer Gold Ring -->
+    <path
+        android:strokeColor="#F59E0B"
+        android:strokeWidth="2.5"
+        android:fillColor="#00000000"
+        android:pathData="M48,8 A40,40 0 1,0 48,88 A40,40 0 1,0 48,8" />
+
+    <!-- Inner Subtle Gold Ring -->
+    <path
+        android:strokeColor="#D97706"
+        android:strokeWidth="0.8"
+        android:strokeAlpha="0.6"
+        android:fillColor="#00000000"
+        android:pathData="M48,12 A36,36 0 1,0 48,84 A36,36 0 1,0 48,12" />
+
+    <!-- Islamic Crescent Moon in Radiant Gold -->
+    <path
+        android:fillColor="#FBBF24"
+        android:pathData="M52,24 C38.75,24 28,34.75 28,48 C28,61.25 38.75,72 52,72 C58.2,72 63.8,69.6 68,65.6 C55.5,65.6 44,55.5 44,43 C44,34.5 48.5,27.2 55,24.3 C54,24.1 53,24 52,24 Z" />
+
+    <!-- 8-Pointed Islamic Star -->
+    <path
+        android:fillColor="#FEF08A"
+        android:pathData="M61,33 L62.8,36.5 L66.5,35 L65.3,38.8 L69,41 L65.3,43.2 L66.5,47 L62.8,45.5 L61,49 L59.2,45.5 L55.5,47 L56.7,43.2 L53,41 L56.7,38.8 L55.5,35 L59.2,36.5 Z" />
+
+    <!-- Zakat Coin / Balance Scales Emblem in Bottom Right -->
+    <!-- Outer coin disc -->
+    <path
+        android:fillColor="#D97706"
+        android:pathData="M66,66 A12,12 0 1,0 66,90 A12,12 0 1,0 66,66" />
+    <path
+        android:strokeColor="#FEF08A"
+        android:strokeWidth="1.5"
+        android:fillColor="#00000000"
+        android:pathData="M66,66 A12,12 0 1,0 66,90 A12,12 0 1,0 66,66" />
+    <!-- Coin Inner Symbol (Scales / Growth Seed) -->
+    <path
+        android:fillColor="#FEF08A"
+        android:pathData="M66,71 L63,76 L69,76 Z M62,77 L70,77 L70,78.5 L62,78.5 Z M65,78.5 L65,83 L63,84 L69,84 L67,83 L67,78.5 Z" />
+</vector>

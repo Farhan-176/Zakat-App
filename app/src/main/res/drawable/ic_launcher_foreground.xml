@@ -1,0 +1,32 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Center Emblem Circle -->
+    <path
+        android:fillColor="#0D4733"
+        android:pathData="M54,26 A28,28 0 1,0 54,82 A28,28 0 1,0 54,26" />
+    <path
+        android:strokeColor="#FDC348"
+        android:strokeWidth="1.8"
+        android:fillColor="#00000000"
+        android:pathData="M54,26 A28,28 0 1,0 54,82 A28,28 0 1,0 54,26" />
+    <!-- Crescent Moon in Gold -->
+    <path
+        android:fillColor="#FDC348"
+        android:pathData="M58,36 C50,36 43,43 43,53 C43,63 51,71 61,71 C65,71 68,70 71,68 C61,68 53,60 53,50 C53,44 56,38 60,36 C59.3,36 58.7,36 58,36 Z" />
+    <!-- Five-pointed Star -->
+    <path
+        android:fillColor="#FFDEA5"
+        android:pathData="M64,43 L65.5,47.5 L70,47.5 L66.3,50.2 L67.7,54.5 L64,51.8 L60.3,54.5 L61.7,50.2 L58,47.5 L62.5,47.5 Z" />
+    <!-- Mini Security Shield in Lower Right -->
+    <path
+        android:fillColor="#7B5800"
+        android:pathData="M70,66 C70,66 76,64 76,70 C76,76 70,80 70,80 C70,80 64,76 64,70 C64,64 70,66 70,66 Z" />
+    <path
+        android:strokeColor="#FFDEA5"
+        android:strokeWidth="1"
+        android:fillColor="#FDC348"
+        android:pathData="M70,67.5 C70,67.5 74.5,66 74.5,70.5 C74.5,75 70,78 70,78 C70,78 65.5,75 65.5,70.5 C65.5,66 70,67.5 70,67.5 Z" />
+</vector>

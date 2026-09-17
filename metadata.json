@@ -1,0 +1,6 @@
+{
+  "name": "Zakat Companion",
+  "description": "Privacy-first local Zakat calculation, Nisab verification, and offline sovereign ledger.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
