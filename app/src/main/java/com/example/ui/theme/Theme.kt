@@ -49,14 +49,59 @@ private val SereneColorScheme = lightColorScheme(
     inverseOnSurface = InverseOnSurfaceLight
 )
 
+private val DarkSereneColorScheme = darkColorScheme(
+    primary = EmeraldPrimaryDark,
+    onPrimary = EmeraldOnPrimaryDark,
+    primaryContainer = EmeraldPrimaryContainerDark,
+    onPrimaryContainer = EmeraldOnPrimaryContainerDark,
+    inversePrimary = EmeraldPrimary,
+
+    secondary = GoldSecondaryDark,
+    onSecondary = GoldOnSecondaryDark,
+    secondaryContainer = GoldSecondaryContainerDark,
+    onSecondaryContainer = GoldOnSecondaryContainerDark,
+
+    tertiary = SageTertiaryDark,
+    onTertiary = SageOnTertiaryDark,
+    tertiaryContainer = SageTertiaryContainerDark,
+    onTertiaryContainer = SageOnTertiaryContainerDark,
+
+    background = DarkSurfaceBackground,
+    onBackground = DarkOnSurface,
+
+    surface = DarkSurface,
+    onSurface = DarkOnSurface,
+    surfaceVariant = DarkSurfaceContainerHighest,
+    onSurfaceVariant = DarkOnSurfaceVariant,
+
+    surfaceContainerLowest = DarkSurfaceContainerLowest,
+    surfaceContainerLow = DarkSurfaceContainerLow,
+    surfaceContainer = DarkSurfaceContainerDefault,
+    surfaceContainerHigh = DarkSurfaceContainerHigh,
+    surfaceContainerHighest = DarkSurfaceContainerHighest,
+
+    outline = DarkOutline,
+    outlineVariant = DarkOutlineVariant,
+
+    error = DarkErrorRed,
+    onError = DarkOnError,
+    errorContainer = DarkErrorContainer,
+    onErrorContainer = DarkOnErrorContainer,
+
+    inverseSurface = SurfaceContainerLowest,
+    inverseOnSurface = OnSurfaceDark
+)
+
 @Composable
 fun MyApplicationTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit,
 ) {
+    val colorScheme = if (darkTheme) DarkSereneColorScheme else SereneColorScheme
+
     MaterialTheme(
-        colorScheme = SereneColorScheme,
+        colorScheme = colorScheme,
         typography = Typography,
         content = content
     )

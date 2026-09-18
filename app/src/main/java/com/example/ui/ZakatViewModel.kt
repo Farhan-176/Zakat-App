@@ -187,6 +187,19 @@ class ZakatViewModel(
         _language.value = lang
     }
 
+    // Theme Mode: Light / Dark mode toggle (null = follow system, true = dark, false = light)
+    // Defaulting to false (Light) or toggleable directly
+    private val _isDarkMode = MutableStateFlow(false)
+    val isDarkMode: StateFlow<Boolean> = _isDarkMode.asStateFlow()
+
+    fun setDarkMode(enabled: Boolean) {
+        _isDarkMode.value = enabled
+    }
+
+    fun toggleDarkMode() {
+        _isDarkMode.value = !_isDarkMode.value
+    }
+
     // 1. Multi-Currency Engine & Google Search Grounding Rate Engine
     val rateService = GeminiNisabRateService()
 
@@ -628,6 +641,7 @@ class ZakatViewModel(
     var showNisabVerificationDialog = MutableStateFlow(false)
     var nisabDialogInitialTab = MutableStateFlow(0)
     var showHawlTrackerDialog = MutableStateFlow(false)
+    var showSettingsDialog = MutableStateFlow(false)
 
     fun openNisabVerificationDialog(initialTab: Int = 0) {
         nisabDialogInitialTab.value = initialTab

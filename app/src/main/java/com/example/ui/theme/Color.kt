@@ -49,3 +49,37 @@ val ErrorRed = Color(0xFFBA1A1A)
 val ErrorContainerRed = Color(0xFFFFDAD6)
 val OnErrorContainerRed = Color(0xFF93000A)
 
+// Dark Theme Palette - Deep Emerald & Nocturnal Obsidian
+val EmeraldPrimaryDark = Color(0xFF7BE5B6)
+val EmeraldOnPrimaryDark = Color(0xFF003826)
+val EmeraldPrimaryContainerDark = Color(0xFF005239)
+val EmeraldOnPrimaryContainerDark = Color(0xFF98F2D1)
+
+val GoldSecondaryDark = Color(0xFFFFBA36)
+val GoldOnSecondaryDark = Color(0xFF422C00)
+val GoldSecondaryContainerDark = Color(0xFF5E4000)
+val GoldOnSecondaryContainerDark = Color(0xFFFFDF9E)
+
+val SageTertiaryDark = Color(0xFFB5CCC1)
+val SageOnTertiaryDark = Color(0xFF20352D)
+val SageTertiaryContainerDark = Color(0xFF364C43)
+val SageOnTertiaryContainerDark = Color(0xFFD1E8DD)
+
+val DarkSurfaceBackground = Color(0xFF0F1512)
+val DarkSurface = Color(0xFF131B17)
+val DarkSurfaceContainerLowest = Color(0xFF0A0F0D)
+val DarkSurfaceContainerLow = Color(0xFF17221D)
+val DarkSurfaceContainerDefault = Color(0xFF1B2721)
+val DarkSurfaceContainerHigh = Color(0xFF23312A)
+val DarkSurfaceContainerHighest = Color(0xFF2B3C34)
+
+val DarkOnSurface = Color(0xFFE1E9E4)
+val DarkOnSurfaceVariant = Color(0xFFA3B3AB)
+val DarkOutline = Color(0xFF5C6F66)
+val DarkOutlineVariant = Color(0xFF384640)
+
+val DarkErrorRed = Color(0xFFFFB4AB)
+val DarkOnError = Color(0xFF690005)
+val DarkErrorContainer = Color(0xFF93000A)
+val DarkOnErrorContainer = Color(0xFFFFDAD6)
+

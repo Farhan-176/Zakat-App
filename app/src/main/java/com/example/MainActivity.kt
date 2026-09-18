@@ -26,6 +26,7 @@ import com.example.ui.ZakatViewModel
 import com.example.ui.ZakatViewModelFactory
 import com.example.ui.components.AsnafModalDialog
 import com.example.ui.components.PrivacyInfoDialog
+import com.example.ui.components.SettingsDialog
 import com.example.ui.components.ZakatBottomNavBar
 import com.example.ui.components.ZakatTopHeader
 import com.example.ui.screens.AssetGroupsScreen
@@ -48,8 +49,10 @@ class MainActivity : ComponentActivity() {
         val factory = ZakatViewModelFactory(repository, assetGroupRepository)
 
         setContent {
-            MyApplicationTheme {
-                val zakatViewModel: ZakatViewModel = viewModel(factory = factory)
+            val zakatViewModel: ZakatViewModel = viewModel(factory = factory)
+            val isDarkMode by zakatViewModel.isDarkMode.collectAsState()
+
+            MyApplicationTheme(darkTheme = isDarkMode) {
                 ZakatCompanionApp(viewModel = zakatViewModel)
             }
         }
@@ -84,6 +87,7 @@ fun MainAppScaffold(viewModel: ZakatViewModel) {
     val showNisabVerification by viewModel.showNisabVerificationDialog.collectAsState()
     val nisabInitialTab by viewModel.nisabDialogInitialTab.collectAsState()
     val showHawlTracker by viewModel.showHawlTrackerDialog.collectAsState()
+    val showSettings by viewModel.showSettingsDialog.collectAsState()
 
     val activeProfile by viewModel.activeProfile.collectAsState()
     val profiles by viewModel.profiles.collectAsState()
@@ -107,7 +111,8 @@ fun MainAppScaffold(viewModel: ZakatViewModel) {
                 activeCurrencySymbol = selectedCurrency.symbol,
                 onProfileClick = { viewModel.showProfileDialog.value = true },
                 onCurrencyClick = { viewModel.showCurrencyDialog.value = true },
-                onPrivacyClick = { viewModel.showPrivacyDialog.value = true }
+                onPrivacyClick = { viewModel.showPrivacyDialog.value = true },
+                onSettingsClick = { viewModel.showSettingsDialog.value = true }
             )
         },
         bottomBar = {
@@ -222,6 +227,13 @@ fun MainAppScaffold(viewModel: ZakatViewModel) {
             viewModel = viewModel,
             onDismiss = { viewModel.showNisabVerificationDialog.value = false },
             initialTab = nisabInitialTab
+        )
+    }
+
+    if (showSettings) {
+        SettingsDialog(
+            viewModel = viewModel,
+            onDismiss = { viewModel.showSettingsDialog.value = false }
         )
     }
 }

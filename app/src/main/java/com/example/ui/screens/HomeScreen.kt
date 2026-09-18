@@ -36,7 +36,10 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ReceiptLong
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Shield
+import androidx.compose.material.icons.filled.DarkMode
+import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.Translate
 import androidx.compose.material.icons.filled.TrendingUp
 import androidx.compose.material.icons.filled.VerifiedUser
@@ -52,6 +55,8 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -107,6 +112,7 @@ fun HomeScreen(
     val userName by viewModel.currentUserName.collectAsState()
     val isGuest by viewModel.isGuestUser.collectAsState()
     val activeProfile by viewModel.activeProfile.collectAsState()
+    val isDarkMode by viewModel.isDarkMode.collectAsState()
     val selectedCurrency by viewModel.selectedCurrency.collectAsState()
     val savedRecords by viewModel.savedRecords.collectAsState()
     val groundedRates by viewModel.groundedRates.collectAsState()
@@ -126,7 +132,7 @@ fun HomeScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(SurfaceMint)
+            .background(MaterialTheme.colorScheme.background)
             .verticalScroll(scrollState)
             .padding(horizontal = 16.dp, vertical = 14.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -191,26 +197,54 @@ fun HomeScreen(
                     }
                 }
 
-                // Privacy Indicator Pill
-                Box(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(100.dp))
-                        .background(SurfaceContainerLow)
-                        .clickable { viewModel.showPrivacyDialog.value = true }
-                        .padding(horizontal = 8.dp, vertical = 4.dp),
-                    contentAlignment = Alignment.Center
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    // Privacy Indicator Pill
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(100.dp))
+                            .background(SurfaceContainerLow)
+                            .clickable { viewModel.showPrivacyDialog.value = true }
+                            .padding(horizontal = 8.dp, vertical = 4.dp),
+                        contentAlignment = Alignment.Center
                     ) {
-                        Icon(Icons.Default.Shield, contentDescription = null, tint = EmeraldPrimary, modifier = Modifier.size(12.dp))
-                        Text(
-                            text = if (isUrdu) "آف لائن" else "Offline",
-                            fontSize = 10.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = EmeraldPrimary
-                        )
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(4.dp)
+                        ) {
+                            Icon(Icons.Default.Shield, contentDescription = null, tint = EmeraldPrimary, modifier = Modifier.size(12.dp))
+                            Text(
+                                text = if (isUrdu) "آف لائن" else "Offline",
+                                fontSize = 10.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = EmeraldPrimary
+                            )
+                        }
+                    }
+
+                    // Settings & Theme Pill
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(100.dp))
+                            .background(SurfaceContainerLow)
+                            .clickable { viewModel.showSettingsDialog.value = true }
+                            .padding(horizontal = 8.dp, vertical = 4.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(4.dp)
+                        ) {
+                            Icon(Icons.Default.Settings, contentDescription = "Settings", tint = EmeraldPrimary, modifier = Modifier.size(12.dp))
+                            Text(
+                                text = if (isUrdu) "ترتیبات" else "Settings",
+                                fontSize = 10.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = EmeraldPrimary
+                            )
+                        }
                     }
                 }
             }
@@ -1135,54 +1169,139 @@ fun HomeScreen(
             }
         }
 
-        // 7. Quick Language Bar & Settings Shortcut
+        // 7. Quick Preferences Bar (Theme Dark Mode Switch & Language)
         Surface(
-            shape = RoundedCornerShape(12.dp),
-            color = SurfaceContainerLow,
+            shape = RoundedCornerShape(14.dp),
+            color = MaterialTheme.colorScheme.surfaceContainerLow,
+            border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
             modifier = Modifier.fillMaxWidth()
         ) {
-            Row(
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 14.dp, vertical = 8.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
+                    .padding(horizontal = 14.dp, vertical = 10.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
+                // Row A: Dark Mode Toggle Switch
                 Row(
+                    modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Icon(Icons.Default.Translate, contentDescription = null, tint = EmeraldPrimary, modifier = Modifier.size(16.dp))
-                    Text(
-                        text = if (isUrdu) "زبان:" else "Language:",
-                        fontSize = 11.5.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = EmeraldPrimary
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Surface(
+                            shape = CircleShape,
+                            color = if (isDarkMode) EmeraldPrimaryContainer else SurfaceMint,
+                            modifier = Modifier.size(28.dp)
+                        ) {
+                            Box(contentAlignment = Alignment.Center) {
+                                Icon(
+                                    imageVector = if (isDarkMode) Icons.Default.DarkMode else Icons.Default.LightMode,
+                                    contentDescription = null,
+                                    tint = EmeraldPrimary,
+                                    modifier = Modifier.size(16.dp)
+                                )
+                            }
+                        }
+                        Column {
+                            Text(
+                                text = if (isUrdu) "ڈارک موڈ" else "Dark Theme",
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                            Text(
+                                text = if (isDarkMode) {
+                                    if (isUrdu) "گہرے رنگ فعال ہیں" else "Night mode active"
+                                } else {
+                                    if (isUrdu) "دن کا روشن انداز" else "Daylight mode active"
+                                },
+                                fontSize = 10.sp,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    }
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Switch(
+                            checked = isDarkMode,
+                            onCheckedChange = { checked ->
+                                viewModel.setDarkMode(checked)
+                            },
+                            colors = SwitchDefaults.colors(
+                                checkedThumbColor = Color.White,
+                                checkedTrackColor = EmeraldPrimary,
+                                uncheckedThumbColor = EmeraldPrimary,
+                                uncheckedTrackColor = MaterialTheme.colorScheme.surfaceContainerHigh
+                            ),
+                            modifier = Modifier.testTag("home_dark_mode_switch")
+                        )
+
+                        // Settings dialog trigger button
+                        IconButton(
+                            onClick = { viewModel.showSettingsDialog.value = true },
+                            modifier = Modifier.size(32.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Settings,
+                                contentDescription = "Open Settings",
+                                tint = EmeraldPrimary,
+                                modifier = Modifier.size(18.dp)
+                            )
+                        }
+                    }
                 }
 
-                Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                    TextButton(
-                        onClick = { viewModel.setLanguage("en") },
-                        modifier = Modifier.height(32.dp)
+                HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+
+                // Row B: Quick Language Selector
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(6.dp)
                     ) {
+                        Icon(Icons.Default.Translate, contentDescription = null, tint = EmeraldPrimary, modifier = Modifier.size(16.dp))
                         Text(
-                            text = "English",
-                            fontWeight = if (!isUrdu) FontWeight.Bold else FontWeight.Normal,
-                            color = if (!isUrdu) EmeraldPrimary else OnSurfaceVariantMuted,
-                            fontSize = 11.5.sp
+                            text = if (isUrdu) "زبان:" else "Language:",
+                            fontSize = 11.5.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = EmeraldPrimary
                         )
                     }
-                    TextButton(
-                        onClick = { viewModel.setLanguage("ur") },
-                        modifier = Modifier.height(32.dp)
-                    ) {
-                        Text(
-                            text = "اردو",
-                            fontWeight = if (isUrdu) FontWeight.Bold else FontWeight.Normal,
-                            color = if (isUrdu) EmeraldPrimary else OnSurfaceVariantMuted,
-                            fontSize = 12.sp
-                        )
+
+                    Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                        TextButton(
+                            onClick = { viewModel.setLanguage("en") },
+                            modifier = Modifier.height(30.dp)
+                        ) {
+                            Text(
+                                text = "English",
+                                fontWeight = if (!isUrdu) FontWeight.Bold else FontWeight.Normal,
+                                color = if (!isUrdu) EmeraldPrimary else OnSurfaceVariantMuted,
+                                fontSize = 11.5.sp
+                            )
+                        }
+                        TextButton(
+                            onClick = { viewModel.setLanguage("ur") },
+                            modifier = Modifier.height(30.dp)
+                        ) {
+                            Text(
+                                text = "اردو",
+                                fontWeight = if (isUrdu) FontWeight.Bold else FontWeight.Normal,
+                                color = if (isUrdu) EmeraldPrimary else OnSurfaceVariantMuted,
+                                fontSize = 12.sp
+                            )
+                        }
                     }
                 }
             }

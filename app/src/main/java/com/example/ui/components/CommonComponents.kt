@@ -53,7 +53,10 @@ import com.example.ui.theme.GoldOnSecondaryContainer
 import com.example.ui.theme.SurfaceMint
 import com.example.util.PortabilityUtils
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Shield
+import androidx.compose.material.icons.filled.DarkMode
+import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.VerifiedUser
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -64,6 +67,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -131,10 +136,11 @@ fun ZakatTopHeader(
     activeCurrencySymbol: String,
     onProfileClick: () -> Unit,
     onCurrencyClick: () -> Unit,
-    onPrivacyClick: () -> Unit
+    onPrivacyClick: () -> Unit,
+    onSettingsClick: () -> Unit = {}
 ) {
     Surface(
-        color = SurfaceMint.copy(alpha = 0.95f),
+        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.95f),
         shadowElevation = 1.dp,
         modifier = Modifier
             .fillMaxWidth()
@@ -262,6 +268,27 @@ fun ZakatTopHeader(
                                 )
                             }
                         }
+
+                        // Settings Button (Direct access to Theme, Dark Mode & Preferences)
+                        Surface(
+                            shape = CircleShape,
+                            color = SurfaceContainerLowest,
+                            border = androidx.compose.foundation.BorderStroke(1.dp, SurfaceContainerHigh),
+                            modifier = Modifier
+                                .size(28.dp)
+                                .clip(CircleShape)
+                                .clickable(onClick = onSettingsClick)
+                                .testTag("top_settings_button")
+                        ) {
+                            Box(contentAlignment = Alignment.Center) {
+                                Icon(
+                                    imageVector = Icons.Default.Settings,
+                                    contentDescription = "Settings & Theme",
+                                    tint = EmeraldPrimary,
+                                    modifier = Modifier.size(14.dp)
+                                )
+                            }
+                        }
                     }
                 }
             }
@@ -275,7 +302,7 @@ fun ZakatBottomNavBar(
     onTabSelected: (AppTab) -> Unit
 ) {
     Surface(
-        color = SurfaceMint.copy(alpha = 0.98f),
+        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.98f),
         shadowElevation = 8.dp,
         modifier = Modifier
             .fillMaxWidth()
@@ -1057,6 +1084,231 @@ fun PrivacyInfoDialog(
                 Text("Understood", fontWeight = FontWeight.Bold, color = EmeraldPrimary)
             }
         },
-        containerColor = SurfaceContainerLowest
+        containerColor = MaterialTheme.colorScheme.surface
+    )
+}
+
+@Composable
+fun SettingsDialog(
+    viewModel: ZakatViewModel,
+    onDismiss: () -> Unit
+) {
+    val isDark by viewModel.isDarkMode.collectAsState()
+    val language by viewModel.language.collectAsState()
+    val isUrdu = language == "ur"
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Settings,
+                    contentDescription = null,
+                    tint = EmeraldPrimary,
+                    modifier = Modifier.size(24.dp)
+                )
+                Text(
+                    text = if (isUrdu) "ترتیبات اور ظاہری شکل" else "Settings & Preferences",
+                    style = MaterialTheme.typography.titleMedium.copy(
+                        fontWeight = FontWeight.Bold,
+                        color = EmeraldPrimary
+                    )
+                )
+            }
+        },
+        text = {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                // Section: Appearance / Theme
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text(
+                        text = if (isUrdu) "ظاہری انداز (تھیم)" else "Appearance & Theme",
+                        style = MaterialTheme.typography.labelLarge.copy(
+                            fontWeight = FontWeight.Bold,
+                            color = EmeraldPrimary
+                        )
+                    )
+
+                    Surface(
+                        shape = RoundedCornerShape(12.dp),
+                        color = MaterialTheme.colorScheme.surfaceContainerLow,
+                        border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 14.dp, vertical = 12.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                                modifier = Modifier.weight(1f)
+                            ) {
+                                Surface(
+                                    shape = CircleShape,
+                                    color = if (isDark) EmeraldPrimaryContainer else SurfaceMint,
+                                    modifier = Modifier.size(36.dp)
+                                ) {
+                                    Box(contentAlignment = Alignment.Center) {
+                                        Icon(
+                                            imageVector = if (isDark) Icons.Default.DarkMode else Icons.Default.LightMode,
+                                            contentDescription = if (isDark) "Dark Mode Active" else "Light Mode Active",
+                                            tint = EmeraldPrimary,
+                                            modifier = Modifier.size(20.dp)
+                                        )
+                                    }
+                                }
+                                Column {
+                                    Text(
+                                        text = if (isUrdu) "ڈارک موڈ (رات کا انداز)" else "Dark Theme",
+                                        fontWeight = FontWeight.SemiBold,
+                                        fontSize = 14.sp,
+                                        color = MaterialTheme.colorScheme.onSurface
+                                    )
+                                    Text(
+                                        text = if (isDark) {
+                                            if (isUrdu) "گہرے رنگوں کا پرسکون انداز فعال ہے" else "Deep emerald & obsidian palette active"
+                                        } else {
+                                            if (isUrdu) "ہلکا اور واضح انداز فعال ہے" else "Crisp high-contrast daylight palette active"
+                                        },
+                                        style = MaterialTheme.typography.bodySmall.copy(
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                            fontSize = 11.5.sp
+                                        )
+                                    )
+                                }
+                            }
+
+                            Switch(
+                                checked = isDark,
+                                onCheckedChange = { checked ->
+                                    viewModel.setDarkMode(checked)
+                                },
+                                colors = SwitchDefaults.colors(
+                                    checkedThumbColor = Color.White,
+                                    checkedTrackColor = EmeraldPrimary,
+                                    uncheckedThumbColor = EmeraldPrimary,
+                                    uncheckedTrackColor = MaterialTheme.colorScheme.surfaceContainerHigh
+                                ),
+                                modifier = Modifier.testTag("dark_mode_switch")
+                            )
+                        }
+                    }
+                }
+
+                // Section: Language
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text(
+                        text = if (isUrdu) "زبان منتخب کریں" else "Language Selection",
+                        style = MaterialTheme.typography.labelLarge.copy(
+                            fontWeight = FontWeight.Bold,
+                            color = EmeraldPrimary
+                        )
+                    )
+
+                    Surface(
+                        shape = RoundedCornerShape(12.dp),
+                        color = MaterialTheme.colorScheme.surfaceContainerLow,
+                        border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 14.dp, vertical = 8.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                text = if (isUrdu) "موجودہ زبان:" else "Active:",
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.Medium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+
+                            Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                                Button(
+                                    onClick = { viewModel.setLanguage("en") },
+                                    colors = ButtonDefaults.buttonColors(
+                                        containerColor = if (!isUrdu) EmeraldPrimary else Color.Transparent,
+                                        contentColor = if (!isUrdu) Color.White else MaterialTheme.colorScheme.onSurface
+                                    ),
+                                    shape = RoundedCornerShape(8.dp),
+                                    contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 12.dp, vertical = 6.dp),
+                                    modifier = Modifier.height(34.dp)
+                                ) {
+                                    Text("English", fontSize = 11.5.sp, fontWeight = FontWeight.Bold)
+                                }
+
+                                Button(
+                                    onClick = { viewModel.setLanguage("ur") },
+                                    colors = ButtonDefaults.buttonColors(
+                                        containerColor = if (isUrdu) EmeraldPrimary else Color.Transparent,
+                                        contentColor = if (isUrdu) Color.White else MaterialTheme.colorScheme.onSurface
+                                    ),
+                                    shape = RoundedCornerShape(8.dp),
+                                    contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 12.dp, vertical = 6.dp),
+                                    modifier = Modifier.height(34.dp)
+                                ) {
+                                    Text("اردو", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Section: Sovereign Privacy Note
+                Surface(
+                    shape = RoundedCornerShape(10.dp),
+                    color = MaterialTheme.colorScheme.surfaceContainerLowest,
+                    border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(10.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Shield,
+                            contentDescription = null,
+                            tint = EmeraldPrimary,
+                            modifier = Modifier.size(16.dp)
+                        )
+                        Text(
+                            text = if (isUrdu) "تمام ترجیحات مکمل طور پر آپ کے فون میں محفوظ رہتی ہیں۔" else "All settings & theme states are preserved securely on-device.",
+                            style = MaterialTheme.typography.bodySmall.copy(
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                fontSize = 10.5.sp
+                            )
+                        )
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = onDismiss,
+                colors = ButtonDefaults.buttonColors(containerColor = EmeraldPrimary),
+                shape = RoundedCornerShape(8.dp)
+            ) {
+                Text(
+                    text = if (isUrdu) "مکمل" else "Done",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
+            }
+        },
+        containerColor = MaterialTheme.colorScheme.surface,
+        shape = RoundedCornerShape(18.dp)
     )
 }
