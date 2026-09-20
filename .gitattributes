@@ -1,0 +1,4 @@
+# Ensure gradlew has LF line endings on all systems
+gradlew text eol=lf
+*.bat text eol=crlf
+*.jar binary
